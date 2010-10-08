@@ -1,0 +1,15 @@
+
+
+== Precompiles scalate templates. ==
+
+Mostly based on code from Yasushi Abe's http://github.com/Yasushi/scalate-cli
+which was not working in only one project of mine so I started this to debug
+the problem and learn about it.
+
+== Pending work ==
+
+TODO replace strings with constants, parameterize?
+TODO replace separators with correct platform independent separators
+
+
+
