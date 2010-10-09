@@ -39,7 +39,7 @@ If you are an xml lover and use appengine-web.xml :
 
 I think this can be set programatically, too.
 
-For a sample servlet look at Yasushi Abe's [hello-scalate-appengine's template server](http://github.com/Yasushi/hello-scalate-appengine/blob/master/src/main/scala/ya/TemplateEngineServlet.scala). I will upload a sample project soon. 
+For a sample servlet look at Yasushi Abe's [hello-scalate-appengine's template servlet](http://github.com/Yasushi/hello-scalate-appengine/blob/master/src/main/scala/ya/TemplateEngineServlet.scala). I will upload a sample project soon. 
 
 ## Warning
 
