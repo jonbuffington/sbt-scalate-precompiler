@@ -59,7 +59,7 @@ object Generator {
   }
 
   private def sourceName( source:String, file:File ) = 
-    file.getParent.replace(stripSlash(source),"")+"/"+ file.getName+".scala"+".scala"
+    file.getParent.replace(stripSlash(source),"")+"/"+ file.getName+".scala"
       //.replaceAll("""\..*""","")
 
   private def buildUri( source:String, file:File ) = 
