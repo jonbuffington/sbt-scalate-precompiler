@@ -31,15 +31,15 @@ If you deploy to google app engine you must set this properties in your app.yaml
 
 If you are an xml lover and use appengine-web.xml :
 
-  <system-properties>
+    <system-properties>
       <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties" />
       <property name="scalate.allowReload" value="false"/>
       <property name="scalate.workdir" value="WEB-INF"/>
-  </system-properties>
+    </system-properties>
 
 I think this can be set programatically, too.
 
-For a sample servlet look at [hello-scalate-appengine's template server](http://github.com/Yasushi/hello-scalate-appengine/blob/master/src/main/scala/ya/TemplateEngineServlet.scala). I will upload a sample project soon. 
+For a sample servlet look at Yasushi Abe's [hello-scalate-appengine's template server](http://github.com/Yasushi/hello-scalate-appengine/blob/master/src/main/scala/ya/TemplateEngineServlet.scala). I will upload a sample project soon. 
 
 ## Warning
 
@@ -53,13 +53,16 @@ For a sample servlet look at [hello-scalate-appengine's template server](http://
 * Stop using MainCompilerConfig. (Why?)
 * Make a clean action.
 * Write tests.
-* Automate the full building thing ( sbt is 2.7.4 and scalate 2.8.0. sbt does not like to build projects with mixed scala versions ).
+* Automate the full building thing ( Apparently sbt does not like to build projects with mixed scala versions ).
 * <s>BUG Generates code into mainSources triggering compilation twice when using `~ compile` or similar.  This was my original problem ( original code entered into a loop ).</s>
 
 
-## Acknowledgements and credits
+## Acknowledgements 
 
-Mostly based on code from Yasushi Abe's [Scalate Cli](http://github.com/Yasushi/scalate-cli) and
+* Mostly based on code from Yasushi Abe's [Scalate Cli](http://github.com/Yasushi/scalate-cli) and
 [sbt scalate plugin](github.com/Yasushi/sbt-scalate-plugin/) which were not working for me.
 I trimmed ( probably with ill effects ) some code and plan to add some features.
 
+* Scala is awesome
+* SBT is awesome
+* Scalate is awesome
