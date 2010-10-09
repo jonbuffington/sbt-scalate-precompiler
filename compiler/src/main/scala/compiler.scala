@@ -3,6 +3,8 @@ package pragmagica.scalate
 import java.io.File
 import scala.collection.Set
 
+import org.slf4j.LoggerFactory
+
 import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
 import org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.support.FileResourceLoader
@@ -10,14 +12,16 @@ import org.fusesource.scalate.util.IOUtil
 
 
 
-/**  Precompiles Scalate templates
+/**  Generates Scala sources from Scalate templates
  *   Based on code from Yasushi Abe's http://github.com/Yasushi/scalate-cli
  */
-object Precompiler {
+object Generator {
+
+  val logger = LoggerFactory.getLogger("ScalateGenerator")
 
   def main(args:Array[String]) {
 
-    assert(args.size >= 2, "invalid argument")
+    assert(args.size >= 2, "Need at least two parameters: output, sourceRoot, [sourceRoot, ...]")
     val sources = args.drop(1).toList
 
     precompile(sources,args.head)
@@ -34,12 +38,18 @@ object Precompiler {
 
     for( source <- sources ) {
 
-      val paths = Finder.scan(source, engine.codeGenerators.keySet)
+      val paths = find(source, engine.codeGenerators.keySet)
 
       for( file <- paths ) {
-        println( "Generating source for "+file )
-        val code        = engine.generateScala(file.getCanonicalPath)
+
+        val uri = buildUri(source,file)
+
+        logger.debug( "Generating source for "+file+" and with uri " + uri )
+
+        val code = engine.generateScala(TemplateSource.fromFile(file,uri), Nil)
         val sourceFile  = new File(output, sourceName(source, file))
+
+        logger.debug( "Generating source in "+ sourceFile )
         sourceFile.getParentFile.mkdirs
         IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
               
@@ -48,35 +58,38 @@ object Precompiler {
 
   }
 
-  private def sourceName( source:String, file:File ) = {
-    val rsrc = 
-        if(source.endsWith("/")) source.take(source.size-1)
-        else source
-    file.getParent.replace(rsrc,"")+"/"+file.getName+".scala"
-  }
+  private def sourceName( source:String, file:File ) = 
+    file.getParent.replace(stripSlash(source),"")+"/"+ file.getName+".scala"+".scala"
+      //.replaceAll("""\..*""","")
 
+  private def buildUri( source:String, file:File ) = 
+    file.getParent .replace(stripSlash(source),"")+"/"+file.getName
 
-}
+  private def stripSlash(path:String) = 
+    if(path.endsWith("/")) path.take(path.size-1)
+    else path
 
-
-object Finder {
-
-  def scan(root:String, exts:Set[String] = Set.empty):List[File] = {
+  private def find(root:String, exts:Set[String] = Set.empty):List[File] = {
     val rootDir = new File(root)
     require( rootDir.exists && rootDir.isDirectory, 
-              "root must be a directory name. Was:  " + root )
-    find(rootDir).filter(filterExt(_,exts))
+              "root must be a directory name: " + root )
+    scan(rootDir).filter(filterExt(_,exts))
   }
 
-  protected def find(basedir:File):List[File] = {
+  private def scan(basedir:File):List[File] = {
     assert( basedir.canRead, "Can't read "+basedir )
     val (dirs,files) = basedir.listFiles.toList.partition(_.isDirectory)
-    println(basedir)
-    (files ++ dirs.flatMap(find(_))) 
+    logger.debug(basedir.toString)
+    (files ++ dirs.flatMap(scan(_))) 
   }
 
   private def filterExt(f:File, exts:Set[String]) = 
     if(exts.isEmpty) true
     else exts.find(_ == (f.getName.split("""\.""").last)).isDefined
 
+
 }
+
+
+
+  

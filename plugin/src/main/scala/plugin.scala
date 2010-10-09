@@ -3,24 +3,37 @@ package pragmagica.scalate.plugin
 import sbt._
 import FileUtilities._
 
+/**
+ *  Based on code from Yasushi Abe's http://github.com/Yasushi/sbt-scalate-compiler
+ */ 
 trait ScalatePlugin extends DefaultWebProject {
 
-  def templateRoots: PathFinder = mainResourcesPath
-  def generatedDirectory = outputRootPath / "gen"
+  def templateRoots: PathFinder = mainSourcePath / "templates"
+  def generatedDirectory        = outputRootPath / "gen"
 
-  // TODO FIXME This causes continuous compilation to repeat the compilation
-  //            because the sources are modified.
-  //            maybe we should find a way to add an unobserved sourceRoot
-  override def mainSourceRoots = super.mainSourceRoots +++ (generatedDirectory##)
+  override def watchPaths = super.watchPaths +++ templateRoots
 
-  override def compileAction = super.compileAction dependsOn(precompile)
+  override def compileAction = super.compileAction dependsOn(compileScalate)
 
-  lazy val precompile = precompileAction
-  def precompileAction = task {createDirectory(generatedDirectory, log)} && 
+  lazy val compileScalate = compileScalateAction
+  protected def compileScalateAction = task { 
+
+    val compilerConfig = new MainCompileConfig { 
+      override def sourceRoots = generatedDirectory##
+      override def sources = generatedDirectory ** "*.scala"
+    } 
+    new CompileConditional(compilerConfig, buildCompiler).run 
+
+  } dependsOn(precompileScalate)
+
+
+  lazy val precompileScalate = precompileScalateAction
+  def precompileScalateAction = task {createDirectory(generatedDirectory, log)} && 
     runTask(
-      Some("pragmagica.scalate.Precompiler"),                             //main
+      Some("pragmagica.scalate.Generator"),                               //main class
       info.pluginsManagedDependencyPath ** "*.jar",                       //classpath
       Seq(generatedDirectory.absolutePath) ++ templateRoots.getPaths      //options
     )
 
-} 
+}
+ 
