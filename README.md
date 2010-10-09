@@ -25,9 +25,9 @@ If you run `~ compile` or `~ prepare-webapp` sbt recompiles the templates when y
 
 If you deploy to google app engine you must set this properties in your app.yaml
 
-  system_properties:
-    scalate.allowReload: false
-    scalate.workdir: WEB-INF
+    system_properties:
+      scalate.allowReload: false
+      scalate.workdir: WEB-INF
 
 If you are an xml lover and use appengine-web.xml :
 
