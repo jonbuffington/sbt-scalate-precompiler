@@ -16,14 +16,20 @@ object ScalateCompilationTest {
 
     val engine    = new TemplateEngine
     engine.workingDirectory = new File("target/scala_2.8.1.RC2/classes")
-    val template  = engine.load( "/test.ssp" )
-    val buffer    = new StringWriter()
-    val context   = new DefaultRenderContext(engine, new PrintWriter(buffer))
 
-    template.render(context)
-    println(buffer.toString)
-    
-    println("END RENDERING ")
+    val templates = List("/test.ssp", "/subfolder/test.scaml", "/subfolder/test.ssp") 
+    templates foreach { t =>
+
+      val template  = engine.load( t )
+      val buffer    = new StringWriter()
+      val context   = new DefaultRenderContext(engine, new PrintWriter(buffer))
+
+      template.render(context)
+      println(buffer.toString)
+
+    }
+
+        println("END RENDERING ")
 
   }
 

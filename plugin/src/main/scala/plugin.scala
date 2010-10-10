@@ -8,11 +8,11 @@ import FileUtilities._
  */ 
 trait ScalatePlugin extends DefaultWebProject {
 
-  def templateRoots: PathFinder = mainSourcePath / "templates"
+  def templateRoots             = (mainSourcePath / "templates")##
   def generatedDirectory        = outputRootPath / "gen"
 
   override def mainSourceRoots  = super.mainSourceRoots +++ (generatedDirectory##)
-  override def watchPaths       = super.watchPaths      +++ templateRoots --- (generatedDirectory***)
+  override def watchPaths       = super.watchPaths      +++ (templateRoots***) --- (generatedDirectory***)
 
   override def compileAction    = super.compileAction dependsOn(precompileScalateAction)
 

@@ -10,7 +10,7 @@ Because sbt 0.7.4 is scala 2.7.7 based it can't directly use scalate which is ba
 ### Build
 
   The artifacts do not live in any repo yet so you must build them yourself.
-Clone the repo and do `sbt update & sbt publish-local` first in the compiler subdirectory and then in the plugin subdirectory.
+Clone the repo and do `sbt update && sbt publish-local` first in the compiler subdirectory and then in the plugin subdirectory.
 
 Then look at the test subdirectory which contains a test project for an example configuration.
 The plugin assumes the templates live in `src/main/templates` if you prefer otherwise, in the project definition override `templateRoots` like this `override def templateRoots = mainSourcePath / "resources"` 
