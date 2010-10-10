@@ -50,17 +50,17 @@ For a sample servlet look at Yasushi Abe's [hello-scalate-appengine's template s
 
 * Make a GAE/J sample app.
 * Replace separators with correct platform independent separators.
-* Stop using MainCompilerConfig. (Why?)
 * Make a clean action.
 * Write tests.
 * Automate the full building thing ( Apparently sbt does not like to build projects with mixed scala versions ).
+* <s>Stop using MainCompilerConfig.</s>
 * <s>BUG Generates code into mainSources triggering compilation twice when using `~ compile` or similar.  This was my original problem ( original code entered into a loop ).</s>
 
 
 ## Acknowledgements 
 
 * Mostly based on code from Yasushi Abe's [Scalate Cli](http://github.com/Yasushi/scalate-cli) and
-[sbt scalate plugin](github.com/Yasushi/sbt-scalate-plugin/) which were not working for me.
+[sbt scalate plugin](http://github.com/Yasushi/sbt-scalate-plugin/) which were not working for me.
 I trimmed ( probably with ill effects ) some code and plan to add some features.
 
 * Scala is awesome
