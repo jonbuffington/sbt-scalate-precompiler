@@ -14,6 +14,8 @@ trait ScalatePlugin extends DefaultWebProject {
   override def mainSourceRoots  = super.mainSourceRoots +++ (generatedDirectory##)
   override def watchPaths       = super.watchPaths      +++ templateRoots --- (generatedDirectory***)
 
+  override def compileAction    = super.compileAction dependsOn(precompileScalateAction)
+
   lazy val precompileScalate = precompileScalateAction
   def precompileScalateAction = task {createDirectory(generatedDirectory, log)} && 
     runTask(
