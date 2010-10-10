@@ -1,5 +1,7 @@
 <p>
   <%= List("hi", "there", "reader!").mkString(" ") %>
-  ${ "yo "+(3+4) } 
+  ${ "yo "+(3+4*10) } 
   <br/>
+  <%= "<script/>alert(\"Escaping?\");</script>" %>
+
 </p>

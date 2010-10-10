@@ -11,6 +11,8 @@ trait ScalatePlugin extends DefaultWebProject {
   def templateRoots: PathFinder = mainSourcePath / "templates"
   def generatedDirectory        = outputRootPath / "gen"
 
+  override def mainSourceRoots = super.mainSourceRoots +++ (generatedDirectory##)
+  
   override def watchPaths = super.watchPaths +++ templateRoots --- (generatedDirectory***)
 
   override def compileAction = super.compileAction dependsOn(precompileScalateAction)
