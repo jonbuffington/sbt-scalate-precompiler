@@ -1,6 +1,7 @@
 package pragmagica.scalate
 
-import java.io.File
+import java.io.{File, FileInputStream}
+import scala.io.Source
 import scala.collection.Set
 
 import org.slf4j.LoggerFactory
@@ -20,20 +21,23 @@ object Generator {
 
   def main(args:Array[String]) {
 
-    assert(args.size >= 2, "Need at least two parameters: output, sourceRoot, [sourceRoot, ...]")
-    val sources = args.drop(1).toList
+    assert(args.size >= 3, "Need at least two parameters: output, imports file, sourceRoot, [sourceRoot, ...]")
+    val sources = args.drop(2).toList
 
-    precompile(sources,args.head)
+    precompile(sources, args.head, args(1))
 
   }
 
-  def precompile(sources:List[String], out:String ) {
+  def precompile(sources:List[String], out:String, importsPath: String) {
 
     val output = new File(out)
     output.mkdirs()
 
     var engine = new TemplateEngine
     engine.resourceLoader = new FileResourceLoader(None)
+
+    val imports = Source.fromInputStream(new FileInputStream(new File(importsPath))).getLines.toList
+    engine.importStatements = engine.importStatements ::: imports ::: Nil
 
     for( source <- sources ) {
 

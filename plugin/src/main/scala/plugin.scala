@@ -10,6 +10,7 @@ trait ScalatePlugin extends DefaultWebProject {
 
   def templateRoots             = (mainSourcePath / "templates")##
   def generatedDirectory        = outputRootPath / "gen"
+  def importsFile               = mainResourcesPath / "scalate_imports.txt"
 
   override def mainSourceRoots  = super.mainSourceRoots +++ (generatedDirectory##)
   override def watchPaths       = super.watchPaths      +++ (templateRoots***) --- (generatedDirectory***)
@@ -26,7 +27,7 @@ trait ScalatePlugin extends DefaultWebProject {
     runTask(
       Some("pragmagica.scalate.Generator"),                               //main class
       depPath ** "*.jar",                                                 //classpath
-      Seq(generatedDirectory.absolutePath) ++ templateRoots.getPaths      //options
+      Seq(generatedDirectory.absolutePath, importsFile.absolutePath) ++ templateRoots.getPaths      //options
     )
   }
 
