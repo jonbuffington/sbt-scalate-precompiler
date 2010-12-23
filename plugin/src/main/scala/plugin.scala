@@ -17,12 +17,18 @@ trait ScalatePlugin extends DefaultWebProject {
   override def compileAction    = super.compileAction dependsOn(precompileScalateAction)
 
   lazy val precompileScalate = precompileScalateAction
-  def precompileScalateAction = task {createDirectory(generatedDirectory, log)} && 
+  def precompileScalateAction = {
+    val depPath = info.parent match {
+      case Some(p) => p.info.pluginsManagedDependencyPath
+      case _ => info.pluginsManagedDependencyPath
+    }
+    task {createDirectory(generatedDirectory, log)} && 
     runTask(
       Some("pragmagica.scalate.Generator"),                               //main class
-      info.pluginsManagedDependencyPath ** "*.jar",                       //classpath
+      depPath ** "*.jar",                                                 //classpath
       Seq(generatedDirectory.absolutePath) ++ templateRoots.getPaths      //options
     )
+  }
 
 }
  
