@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory
 
 import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
 import org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.support.FileResourceLoader
-import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.util.{FileResourceLoader, IOUtil}
 
 
 
