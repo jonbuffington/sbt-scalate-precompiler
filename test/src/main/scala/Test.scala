@@ -15,7 +15,7 @@ object ScalateCompilationTest {
     println("BEGIN RENDERING ")
 
     val engine    = new TemplateEngine
-    engine.workingDirectory = new File("target/scala_2.8.1.RC2/classes")
+    engine.workingDirectory = new File("target/scala_2.8.1/classes")
 
     val templates = List("/test.ssp", "/subfolder/test.scaml", "/subfolder/test.ssp") 
     templates foreach { t =>
